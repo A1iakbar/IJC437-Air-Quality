@@ -1,0 +1,4 @@
+.metric,.estimator,.estimate,model
+rmse,standard,4.061714849608445,Random Forest (tuned)
+rsq,standard,0.6073791408450689,Random Forest (tuned)
+mae,standard,2.5575922538731364,Random Forest (tuned)

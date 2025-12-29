@@ -1,0 +1,12 @@
+metric,value
+n_days_total,3471
+n_days_pm25_nonNA,3471
+n_days_weather_temp_nonNA,3471
+n_days_weather_wind_nonNA,3471
+n_days_weather_prcp_nonNA,3471
+n_days_complete_cases_pm25_weather,3471
+date_min,2016-01-30
+date_max,2025-12-27
+pm25_mean,10.2072372801389
+pm25_sd,7.0786709418987
+median_active_sensors,9
