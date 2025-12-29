@@ -26,28 +26,6 @@ The project focuses on **predicting and understanding PM2.5 air pollution in Lon
 
 ---
 
-## Repository Structure
-
-code/
-01_download_openaq_pm25.r
-02_clean_merge_weather.R.r
-03_rq1_time_trends.r
-04_rq2_weather_association.r
-05_rq3_prediction_models.r
-
-data/
-processed/
-primary_pm25_daily_london.csv
-openmeteo_daily_london.csv
-merged_pm25_weather.csv
-
-output/
-figures/
-tables/
-logs/
-
-
-
 ### Structure overview
 
 - **code/**  
