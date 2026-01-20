@@ -1,28 +1,3 @@
-# ============================================================
-# IJC437 - Introduction to Data Science (Individual Coursework)
-# Script: 04_rq2_weather_association.R
-#
-# Purpose:
-# - Address RQ2 by quantifying associations between daily PM2.5 and
-#   meteorological variables (temperature, wind speed, precipitation),
-#   and by comparing PM2.5 distributions under different weather conditions.
-#
-# Research Questions supported:
-# - RQ2: How are meteorological conditions associated with daily PM2.5 levels,
-#        and how do PM2.5 distributions differ under varying weather conditions?
-#
-# Inputs:
-# - data/processed/merged_pm25_weather.csv
-#
-#
-# Reproducibility notes:
-# - Uses complete-case rows for correlation/scatter; group comparisons use the same filtered set.
-# - All outputs are saved to disk; minimal console output.
-#
-# ============================================================
-
-
-
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
@@ -74,7 +49,7 @@ rc <- rcorr(
   as.matrix(df_rq2 %>% select(pm25_london_mean, temp_mean_c, wind_mean_kmh, prcp_sum_mm)),
   type = "spearman"
 )
-rc  # shows r, n, P
+rc 
 
 cor_table <- tibble(
   variable = c("temp_mean_c", "wind_mean_kmh", "prcp_sum_mm"),
@@ -197,7 +172,7 @@ ggsave(
   plot = p_wind_box, width = 8, height = 4.5, dpi = 300
 )
 
-# Summary stats by wind group 
+# Summary stats by wind group
 wind_summary <- df_rq2b %>%
   group_by(wind_group) %>%
   summarise(
