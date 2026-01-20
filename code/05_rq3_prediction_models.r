@@ -3,25 +3,59 @@
 # Script: 05_rq3_prediction_models.R
 #
 # Purpose:
-# - Address RQ3 by predicting daily PM2.5 in London using:
-#   (i) historical PM2.5 features (lag + rolling means),
-#   (ii) meteorological variables (temperature, wind, precipitation),
+# - Address RQ3 by modelling and predicting daily PM2.5 concentrations in London.
+# - Evaluate how much predictive signal is provided by:
+#   (i) temporal persistence (lagged PM2.5 and rolling means),
+#   (ii) meteorological variables (temperature, wind speed, precipitation),
 #   (iii) calendar-based features (month, day-of-week).
 #
-# Modelling approach:
-# - Chronological split: first 80% train, last 20% test (holdout).
-# - Baselines + tree-based models:
-#   - Naive (lag-1), Linear Regression, Random Forest, XGBoost
-#   - LightGBM is optional (runs only if installed).
-# - Hyperparameter tuning (Random Forest) via rolling-origin CV on TRAIN only.
-# - Final evaluation is performed once on the holdout TEST set.
+# Input data:
+# - data/processed/merged_pm25_weather.csv
+#   (daily London PM2.5 + meteorological variables; produced in Script 02)
 #
+# Feature engineering:
+# - Temporal persistence:
+#   * pm25_lag_1  (1-day lag)
+#   * pm25_roll7  (7-day rolling mean)
+#   * pm25_roll30 (30-day rolling mean)
+# - Calendar structure:
+#   * month
+#   * day_of_week
+#
+# Modelling strategy:
+# - Supervised regression with a strict chronological split:
+#   * First 80% of observations used for training
+#   * Last 20% reserved as a holdout test set
+# - Models evaluated:
+#   * Naive baseline (lag-1 persistence)
+#   * Linear regression
+#   * Random Forest
+#   * XGBoost
+# - Tree-based models are used to capture non-linear relationships
+#   and interactions identified during exploratory analysis.
+#
+# Hyperparameter tuning:
+# - Random Forest hyperparameters (mtry, min_n) are tuned using
+#   rolling-origin cross-validation on the training data only.
+# - The final tuned model is evaluated once on the holdout test set
+#   to avoid information leakage.
+#
+# Evaluation metrics:
+# - RMSE, MAE, and R² computed on the test set.
+#
+# Outputs (written to disk):
+# - output/tables/Table5_metrics_comparison.csv
+# - output/tables/Table6_final_model_metrics.csv
+# - output/tables/Table7_test_set_actual_vs_predicted.csv
+# - output/figures/Fig11_test_actual_vs_pred_rf.png
+# - output/figures/Fig12_error_over_time_rf.png
+# - output/figures/Fig13_rf_feature_importance.png
 #
 # Reproducibility notes:
-# - Script saves results to disk and avoids interactive printing.
-# - Uses set.seed for consistent results across runs.
+# - Uses a fixed random seed (set.seed).
+# - All results are written to disk; no interactive steps required.
+# - Chronological splitting ensures realistic forecasting conditions.
 #
-# Last updated: 2025-12-28
 # ============================================================
 
 
