@@ -1,0 +1,13 @@
+model,.metric,.estimate
+Linear Regression,rmse,4.295840710076214
+Linear Regression,rsq,0.5613472481720748
+Linear Regression,mae,2.8405680605950625
+Random Forest,rmse,4.062432301228838
+Random Forest,rsq,0.6095724811444961
+Random Forest,mae,2.5624526274422577
+XGB,rmse,4.3139070783027185
+XGB,rsq,0.5913261480334855
+XGB,mae,2.704877402508589
+Naive (lag-1),rmse,4.77014753198309
+Naive (lag-1),rsq,0.5053845160057202
+Naive (lag-1),mae,2.795492985002419

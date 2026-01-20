@@ -1,0 +1,4 @@
+wind_group,n_days,mean_pm25,median_pm25,iqr_pm25
+Low wind,1157,12.89,10.16,8.75
+Medium wind,1157,9.8,7.69,5.22
+High wind,1157,7.94,6.74,3.09

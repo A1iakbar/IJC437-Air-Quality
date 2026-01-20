@@ -1,0 +1,4 @@
+variable,spearman_rho,p_value,n
+temp_mean_c,-0.192,<2e-16,3471
+wind_mean_kmh,-0.343,<2e-16,3471
+prcp_sum_mm,-0.183,<2e-16,3471
