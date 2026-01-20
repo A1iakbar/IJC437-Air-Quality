@@ -1,3 +1,36 @@
+# ============================================================
+# IJC437 - Introduction to Data Science (Individual Coursework)
+# Script: 02_clean_merge_weather.R
+#
+# Purpose:
+# - Prepare an analysis-ready daily dataset by combining:
+#   (i) city-wide daily PM2.5 metrics (from Script 01),
+#   (ii) daily meteorological variables from Open-Meteo.
+# - Produce a merged dataset used across EDA and modelling scripts.
+#
+# Data sources:
+# - PM2.5: data/processed/primary_pm25_daily_london.csv (OpenAQ-derived output from Script 01)
+# - Weather: Open-Meteo Archive API (Central London coordinates)
+#
+# Key steps:
+# 1) Load the primary daily PM2.5 dataset and extract its date range.
+# 2) Download daily weather variables (temperature, wind speed, precipitation) from Open-Meteo
+#    for the same period and build a tidy weather table.
+# 3) Merge PM2.5 and weather by date (left join) to preserve the PM2.5 time index.
+# 4) Create a compact data-quality summary (missingness + basic PM2.5 stats).
+#
+# Outputs (written to disk):
+# - data/processed/openmeteo_daily_london.csv
+# - output/tables/Table1_data_quality_summary.csv
+# - data/processed/merged_pm25_weather.csv
+#
+# Reproducibility notes:
+# - Uses explicit date alignment (no interpolation).
+# - Fails fast if Open-Meteo response structure is unexpected.
+#
+# ============================================================
+
+
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
