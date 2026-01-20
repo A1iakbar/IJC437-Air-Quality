@@ -1,10 +1,47 @@
+# ============================================================
+# IJC437 - Introduction to Data Science (Individual Coursework)
+# Script: 01_download_openaq_pm25.R
+#
+# Purpose:
+# - Download daily PM2.5 data for London-area monitoring locations from OpenAQ (v3 API).
+# - Select fixed monitoring locations within 25km of central London and identify the best
+#   PM2.5 sensor per location based on daily coverage.
+# - Produce a city-level daily dataset (wide by sensor + London mean + sensor count).
+#
+# Data sources:
+# - OpenAQ v3 API (requires OPENAQ_KEY environment variable).
+#
+# Key steps:
+# 1) Query candidate locations in radius; keep fixed monitors (not mobile).
+# 2) Probe each location to find PM2.5 sensor with best daily coverage (page-1 rows).
+# 3) Select top N sensors by coverage and download full daily series (paginated).
+# 4) Pivot to wide format and compute:
+#    - pm25_london_mean (row mean across sensors)
+#    - n_sensors (non-missing sensors per day)
+#
+# Inputs / requirements:
+# - OPENAQ_KEY must be set (e.g., Sys.setenv(OPENAQ_KEY="...") or via .Renviron).
+#
+# Outputs (written to disk):
+# - output/tables/Table0_all_candidate_locations_sensor_probe.csv
+# - output/tables/Table0_selected_locations_by_coverage.csv
+# - data/processed/primary_pm25_daily_london.csv
+#
+# Reproducibility notes:
+# - Uses retry + exponential backoff for transient API errors (e.g., 429/5xx).
+# - Includes short sleeps to reduce rate-limit risk.
+#
+# ============================================================
+
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
 
-#install.packages(c("httr", "jsonlite", "dplyr", "lubridate", "readr", "tidymodels", "usethis"))
+#install.packages(c("httr", "jsonlite", "dplyr", "lubridate", "readr"))
 library(lubridate)
 library(jsonlite)
+library(tibble)
+library(tidyr)
 library(dplyr)
 library(readr)
 library(purrr)
