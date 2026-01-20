@@ -1,28 +1,3 @@
-# ============================================================
-# IJC437 - Introduction to Data Science (Individual Coursework)
-# Script: 03_rq1_time_trends.R
-#
-# Purpose:
-# - Address RQ1 by analysing how PM2.5 in London varies over time:
-#   (i) seasonal patterns (month-level variation) and
-#   (ii) long-term trends (multi-year changes).
-#
-# Research Questions supported:
-# - RQ1: How do PM2.5 concentrations in London vary over time in terms of
-#        seasonal patterns and long-term trends?
-#
-# Inputs:
-# - data/processed/merged_pm25_weather.csv
-#
-#
-# Reproducibility notes:
-# - This script saves figures/tables to disk (minimal console printing).
-# - Paths follow a consistent repo structure (data/processed, output/figures, output/tables).
-#
-# ============================================================
-
-
-
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
@@ -163,7 +138,6 @@ ggsave(
 )
 
 # Statistical Analysis: Seasonality Kruskal–Wallis test (Month vs PM2.5)
-
 df_rq1_kw <- df %>%
   mutate(month = month(date, label = TRUE, abbr = TRUE)) %>%
   select(pm25_london_mean, month) %>%
@@ -444,5 +418,3 @@ spear_res
 #        rho
 # -0.3009894
 # =========================================================
-
-
