@@ -1,3 +1,40 @@
+# ============================================================
+# IJC437 - Introduction to Data Science (Individual Coursework)
+# Script: 04_rq2_weather_association.R
+#
+# Purpose:
+# - Address RQ2 by quantifying and visualising associations between daily PM2.5 in London
+#   and key meteorological variables (temperature, wind speed, precipitation).
+# - Use rank-based and non-parametric methods suitable for skewed PM2.5 distributions.
+#
+# Inputs:
+# - data/processed/merged_pm25_weather.csv (daily London PM2.5 + weather; produced in Script 02)
+#
+# Key analyses:
+# 1) Compute Spearman rank correlations (rho, p-values, n) between PM2.5 and weather variables
+#    and save as Table 3.
+# 2) Visualise bivariate relationships using scatter plots + LOESS smoothers (Figures 7–9).
+# 3) Create wind-speed tertiles (Low/Medium/High) and compare PM2.5 distributions (Figure 10),
+#    supported by summary stats (Table 4) and a Kruskal–Wallis test.
+#
+# Outputs (written to disk):
+# - output/tables/Table3_spearman_correlations.csv
+# - output/figures/Fig7_pm25_vs_windspeed.png
+# - output/figures/Fig8_pm25_vs_temperature.png
+# - output/figures/Fig9_pm25_vs_precipitation.png
+# - output/figures/Fig10_pm25_by_wind_categories.png
+# - output/tables/Table4_wind_group_summary.csv
+#
+# Method notes:
+# - Spearman is used to capture monotonic relationships without assuming linearity/normality.
+# - Kruskal–Wallis tests distributional differences across wind categories (non-parametric).
+#
+# Reproducibility notes:
+# - Script filters to complete cases for RQ2 analyses and writes outputs to disk.
+#
+# ============================================================
+
+
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
