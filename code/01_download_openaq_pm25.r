@@ -31,7 +31,7 @@ if (!nzchar(OPENAQ_KEY)) {
     "Preferably add it to .Renviron for persistent use.\n"
   )
 }
-OPENAQ_KEY <- "42178ba929787ed7e26cf20cdefbcf874b106e51181dd113a9418dcf222f1c8b"
+
 # -------------------------------
 # OpenAQ GET helper
 # -------------------------------
