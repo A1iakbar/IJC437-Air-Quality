@@ -74,7 +74,7 @@ end_date   <- max(pm25$date, na.rm = TRUE)
 LAT <- 51.5074
 LON <- -0.1278
 
-
+# Variables capture dispersion/removal processes commonly linked to PM2.5 variability.
 DAILY_VARS <- c("temperature_2m_mean", "wind_speed_10m_mean", "precipitation_sum")
 
 # Open-Meteo Archive API endpoint
@@ -86,7 +86,7 @@ query <- list(
   start_date = as.character(start_date),
   end_date   = as.character(end_date),
   daily = paste(DAILY_VARS, collapse = ","),
-  timezone = "Europe/London"
+  timezone = "Europe/London" # Using local timezone to keep daily alignment consistent with the London PM2.5 series.
 )
 
 
@@ -122,6 +122,7 @@ readr::write_csv(weather_daily, "data/processed/openmeteo_daily_london.csv")
 # -------------------------------
 # Merging PM2.5 + weather
 # -------------------------------
+# Left join preserves the PM2.5 timeline; weather missingness is handled in downstream analyses.
 merged <- pm25 %>%
   left_join(weather_daily, by = "date") %>%
   arrange(date)
