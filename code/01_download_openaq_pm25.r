@@ -13,7 +13,7 @@ library(httr)
 
 
 # -------------------------------
-# Directories (create if missing)
+# Directories
 # -------------------------------
 dir.create("output/tables", recursive = TRUE, showWarnings = FALSE)
 dir.create("data/processed", recursive = TRUE, showWarnings = FALSE)
@@ -31,7 +31,6 @@ if (!nzchar(OPENAQ_KEY)) {
     "Preferably add it to .Renviron for persistent use.\n"
   )
 }
-
 # -------------------------------
 # OpenAQ GET helper
 # -------------------------------
@@ -43,7 +42,7 @@ openaq_get <- function(path, query = list()) {
   fromJSON(txt, flatten = TRUE)
 }
 
-# Retry wrapper with exponential backoff (handles 429/5xx)
+# Retry wrapper with exponential backoff 
 safe_openaq_get <- function(path, query = list(), retries = 6, base_sleep = 1) {
   for (i in seq_len(retries)) {
     out <- tryCatch(openaq_get(path, query = query), error = function(e) e)
@@ -74,7 +73,7 @@ DOWNLOAD_DATE_FROM <- "2016-01-01"
 DOWNLOAD_DATE_TO   <- "2025-12-31"
 
 # -------------------------------
-# 1) Get locations in radius
+# Getting locations in radius
 # -------------------------------
 locs_london <- safe_openaq_get("/locations", query = list(
   coordinates = paste0(LAT, ",", LON),
@@ -115,7 +114,7 @@ if (nrow(sel_locs) == 0) {
 loc_ids_vec <- sel_locs$id
 
 # -------------------------------
-# 2) Probe best PM2.5 sensor per location
+# Probe best PM2.5 sensor per location
 # -------------------------------
 probe_loc_pm25 <- function(loc_id) {
 
@@ -152,7 +151,6 @@ probe_loc_pm25 <- function(loc_id) {
   }
 
   res_list <- lapply(pm$id, function(sensor_id) {
-    # small delay to be gentle with the API
     Sys.sleep(0.35)
 
     r <- safe_openaq_get(
@@ -230,7 +228,7 @@ print(table(scan$status, useNA = "ifany"))
 
 write_csv(scan, "output/tables/Table0_all_candidate_locations_sensor_probe.csv")
 
-# Select top N by data coverage (fail-safe: allow any status as long as rows exist)
+# Selecting top N by data coverage (fail-safe: allowing any status as long as rows exist)
 selected_locations <- scan %>%
   filter(!is.na(pm25_sensor_id), page1_rows > 0) %>%
   arrange(desc(page1_rows)) %>%
@@ -246,7 +244,7 @@ sensor_ids <- selected_locations$pm25_sensor_id
 cat("Number of selected sensors:", length(sensor_ids), "\n")
 
 # -------------------------------
-# 3) Download full daily series for selected sensors (pagination)
+# Downloading full daily series for selected sensors (pagination)
 # -------------------------------
 
 fetch_all_days <- function(sensor_id,
@@ -267,7 +265,6 @@ fetch_all_days <- function(sensor_id,
       )
     )
 
-    # Defensive checks: handle empty / unexpected API responses
     if (is.null(res) || is.null(res$results) || length(res$results) == 0) break
 
     df <- tryCatch(
@@ -278,7 +275,7 @@ fetch_all_days <- function(sensor_id,
     if (is.null(df) || nrow(df) == 0) break
     if (!("value" %in% names(df))) break
 
-    # Prefer local datetime if available; fall back to utc
+    # local datetime if available
     date_col <- dplyr::coalesce(
       df$period.datetimeFrom.local,
       df$period.datetimeFrom.utc
@@ -292,7 +289,7 @@ fetch_all_days <- function(sensor_id,
       pm25      = df$value
     )
 
-    # Stop when the page is not "full" (i.e., last page)
+    # Stopping when the page is not full
     if (nrow(df) < 1000) break
 
     page <- page + 1
@@ -310,7 +307,7 @@ pm25_all_full  <- bind_rows(pm25_list_full)
 cat("Total rows downloaded:", nrow(pm25_all_full), "\n")
 
 # -------------------------------
-# 4) City-level daily dataset (wide + London mean)
+# City-level daily dataset (wide + London mean)
 # -------------------------------
 pm25_wide <- pm25_all_full %>%
   group_by(sensor_id, date) %>%
@@ -331,7 +328,7 @@ pm25_wide <- pm25_wide %>%
 cat("Final dataset rows:", nrow(pm25_wide), "\n")
 
 # -------------------------------
-# 5) Save
+# Saving
 # -------------------------------
 write_csv(
   pm25_wide,
