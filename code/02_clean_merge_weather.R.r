@@ -1,33 +1,3 @@
-# ============================================================
-# IJC437 - Introduction to Data Science (Individual Coursework)
-# Script: 02_clean_merge_weather.R
-#
-# Purpose:
-# - Download daily meteorological variables for London from Open-Meteo
-#   (temperature, wind speed, precipitation).
-# - Clean and validate the weather data.
-# - Merge weather with the PRIMARY PM2.5 daily dataset created in:
-#   code/01_download_openaq_pm25.R
-#
-# Research Questions supported:
-# - RQ2: Association between meteorology and daily PM2.5; distribution changes under conditions.
-# - RQ3: Prediction of daily PM2.5 using meteorology + calendar-based features.
-#
-# Inputs:
-# - data/processed/primary_pm25_daily_london.csv
-#
-# Outputs (saved files):
-# - data/raw/openmeteo_daily_london.csv
-# - data/processed/merged_pm25_weather.csv
-# - output/tables/Table1_data_quality_summary.csv
-#
-# Reproducibility notes:
-# - Date range is derived automatically from the primary PM2.5 dataset.
-# - No secrets required (Open-Meteo is open).
-# - Script includes error handling + basic QA checks.
-#
-# ============================================================
-
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
@@ -49,7 +19,7 @@ dir.create("output/tables", recursive = TRUE, showWarnings = FALSE)
 
 
 # -------------------------------
-# 1) Load primary PM2.5 dataset
+# Loading primary PM2.5 dataset
 # -------------------------------
 
 pm25 <- readr::read_csv("data/processed/primary_pm25_daily_london.csv", show_col_types = FALSE)
@@ -65,7 +35,7 @@ end_date   <- max(pm25$date, na.rm = TRUE)
 
 
 # -------------------------------
-# 2) Download daily weather data from Open-Meteo
+# Downloading daily weather data from Open-Meteo
 # -------------------------------
 # Central London coordinates
 LAT <- 51.5074
@@ -96,13 +66,13 @@ if (httr::http_error(res)) {
 
 weather_json <- jsonlite::fromJSON(txt, flatten = TRUE)
 
-# Validate expected structure
+# Validating expected structure
 if (is.null(weather_json$daily) || is.null(weather_json$daily$time)) {
   stop("Unexpected Open-Meteo response: 'daily.time' is missing.")
 }
 
 # -------------------------------
-# 3) Build tidy weather dataframe
+# Building tidy weather dataframe
 # -------------------------------
 weather_daily <- tibble(
   date = as.Date(weather_json$daily$time),
@@ -113,18 +83,18 @@ weather_daily <- tibble(
   arrange(date)
 
 
-# Save raw weather 
+# Saving raw weather data 
 readr::write_csv(weather_daily, "data/processed/openmeteo_daily_london.csv")
 
 # -------------------------------
-# 4) Merge PM2.5 + weather
+# Merging PM2.5 + weather
 # -------------------------------
 merged <- pm25 %>%
   left_join(weather_daily, by = "date") %>%
   arrange(date)
 
 # -------------------------------
-# 5) QA / Data quality summary (100-band friendly)
+# Data quality summary
 # -------------------------------
 qa_summary <- tibble(
   metric = c(
@@ -159,6 +129,6 @@ readr::write_csv(qa_summary, "output/tables/Table1_data_quality_summary.csv")
 
 
 # -------------------------------
-# 6) Save merged analysis-ready dataset
+# Saving merged dataset
 # -------------------------------
 readr::write_csv(merged, "data/processed/merged_pm25_weather.csv")
