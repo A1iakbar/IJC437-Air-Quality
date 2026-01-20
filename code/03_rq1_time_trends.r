@@ -1,3 +1,44 @@
+# ============================================================
+# IJC437 - Introduction to Data Science (Individual Coursework)
+# Script: 03_rq1_time_trends.R
+#
+# Purpose:
+# - Address RQ1 by characterising temporal behaviour of daily PM2.5 in London:
+#   (i) short-term variability, (ii) seasonality, (iii) longer-term change.
+#
+# Inputs:
+# - data/processed/merged_pm25_weather.csv (daily London PM2.5 + weather; produced in Script 02)
+#
+# Key analyses:
+# 1) Visualise the full daily PM2.5 time series (Figure 1).
+# 2) Quantify and visualise seasonality using monthly boxplots (Figure 2),
+#    supported by a Kruskal–Wallis test across months.
+# 3) Describe the distribution of daily PM2.5 (Figure 3) to assess skewness/non-normality.
+# 4) Explore smoothed long-term structure using LOESS (Figure 4) and yearly mean/median trends (Figure 5),
+#    with a Kruskal–Wallis test across years.
+# 5) Summarise seasonality numerically (Table 2) and visualise a 30-day rolling mean (Figure 6).
+# 6) Provide a monotonic trend indicator using Spearman correlation between time and PM2.5.
+#
+# Outputs (written to disk):
+# - output/figures/Fig1_daily_pm25_timeseries.png
+# - output/figures/Fig2_seasonality_monthly_boxplot.png
+# - output/figures/Fig3_pm25_histogram_normal.png
+# - output/figures/Fig4_loess_trend.png
+# - output/figures/Fig5_yearly_trend_mean_median.png
+# - output/figures/Fig6_rolling_mean_30days.png
+# - output/tables/Table2_monthly_pm25_summary.csv
+#
+# Method notes:
+# - Non-parametric tests (Kruskal–Wallis, Spearman) are used because PM2.5 is right-skewed
+#   and violates Gaussian assumptions.
+#
+# Reproducibility notes:
+# - Script writes all figures/tables to disk (no interactive steps required).
+#
+# ============================================================
+
+
+
 # ==================================================
 # Installing and Importing Necessary Libraries
 # ==================================================
@@ -138,6 +179,7 @@ ggsave(
 )
 
 # Statistical Analysis: Seasonality Kruskal–Wallis test (Month vs PM2.5)
+# Non-parametric test used because PM2.5 is skewed and groups are not assumed normal.
 df_rq1_kw <- df %>%
   mutate(month = month(date, label = TRUE, abbr = TRUE)) %>%
   select(pm25_london_mean, month) %>%
@@ -332,7 +374,7 @@ write_csv(
   file.path(out_dir_table, "Table2_monthly_pm25_summary.csv")
 )
 
-
+# Rolling mean smooths short-term noise to reveal slower-moving changes beyond seasonality.
 # 30-day Rolling Mean of PM2.5 in London
 df <- df %>%
   arrange(date) %>%
@@ -406,6 +448,7 @@ spear_res <- cor.test(
 )
 
 spear_res
+# Spearman captures monotonic time association without assuming linearity or normality.
 # =========================================================
 # Output:
 #
