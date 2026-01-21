@@ -32,7 +32,7 @@
 
 
 # ==================================================
-# Installing and Importing Necessary Libraries
+# Importing Necessary Libraries
 # ==================================================
 library(dplyr)
 library(readr)
