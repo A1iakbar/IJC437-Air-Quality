@@ -57,15 +57,11 @@ dir.create("data/processed", recursive = TRUE, showWarnings = FALSE)
 # -------------------------------
 # API key (environment variable)
 # -------------------------------
-OPENAQ_KEY <- Sys.getenv("OPENAQ_KEY")
-if (!nzchar(OPENAQ_KEY)) {
-  stop(
-    "OPENAQ_KEY not found.\n",
-    "Please set your OpenAQ API key as an environment variable before running this script.\n",
-    "Example: Sys.setenv(OPENAQ_KEY='your_key') (temporary)\n",
-    "Preferably add it to .Renviron for persistent use.\n"
-  )
-}
+
+# Please Insert Your Own API Key!!!
+OPENAQ_KEY <- "42178ba929787ed7e26cf20cdefbcf874b106e51181dd113a9418dcf222f1c8b"
+
+
 # -------------------------------
 # OpenAQ GET helper
 # -------------------------------
