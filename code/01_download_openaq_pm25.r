@@ -59,8 +59,11 @@ dir.create("data/processed", recursive = TRUE, showWarnings = FALSE)
 # -------------------------------
 
 # Please Insert Your Own API Key!!!
-OPENAQ_KEY <- "42178ba929787ed7e26cf20cdefbcf874b106e51181dd113a9418dcf222f1c8b"
+OPENAQ_KEY <- ""
 
+if (OPENAQ_KEY == "") {
+  stop("No API key provided. Please supply a valid OpenAQ API key.")
+}
 
 # -------------------------------
 # OpenAQ GET helper
