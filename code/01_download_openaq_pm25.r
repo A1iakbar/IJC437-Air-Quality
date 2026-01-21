@@ -34,10 +34,8 @@
 # ============================================================
 
 # ==================================================
-# Installing and Importing Necessary Libraries
+# Importing Necessary Libraries
 # ==================================================
-
-#install.packages(c("httr", "jsonlite", "dplyr", "lubridate", "readr"))
 library(lubridate)
 library(jsonlite)
 library(tibble)
