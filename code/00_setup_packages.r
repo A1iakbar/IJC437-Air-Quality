@@ -5,7 +5,6 @@
 # Purpose:
 # - Install and load all required R packages for the project.
 # - Run once before executing the analysis scripts.
-#
 # ============================================================
 
 required_packages <- c(
@@ -41,3 +40,4 @@ required_packages <- c(
 
 # Load packages
 invisible(lapply(required_packages, library, character.only = TRUE))
+
