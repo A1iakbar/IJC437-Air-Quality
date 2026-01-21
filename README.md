@@ -34,6 +34,7 @@ The analysis follows a structured and reproducible data science pipeline, includ
 
 ```text
 code/
+  00_setup_packages.R              # Installing packages
   01_download_openaq_pm25.R        # Data acquisition
   02_clean_merge_weather.R         # Data cleaning and integration
   03_rq1_time_trends.R             # Temporal analysis (RQ1)
@@ -78,6 +79,7 @@ Baseline and weather-enhanced models are developed to predict daily PM2.5 concen
 2. Open RStudio and set the working directory to the repository root.  
 3. Ensure **R (version 4.2 or later)** and the required packages are installed.  
 4. Run the scripts in numerical order:
+   - `00_setup_packages.r`
    - `01_download_openaq_pm25.R`
    - `02_clean_merge_weather.R`
    - `03_rq1_time_trends.R`
