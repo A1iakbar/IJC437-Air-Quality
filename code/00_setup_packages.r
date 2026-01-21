@@ -3,7 +3,7 @@
 # Script: 00_setup_packages.R
 #
 # Purpose:
-# - Install and load all required R packages for the project.
+# - Install all required R packages for the project.
 # - Run once before executing the analysis scripts.
 # ============================================================
 
@@ -35,9 +35,5 @@ required_packages <- c(
 )
 
 
-
-
-
-# Load packages
-invisible(lapply(required_packages, library, character.only = TRUE))
-
+# Installing all required packages
+install.packages(setdiff(required_packages, installed.packages()[, "Package"]))
